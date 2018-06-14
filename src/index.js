@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import Home from './components/Home';
 import User from './components/User';
 import Post from './components/Post';
-import {Link} from 'react-router-dom';
 
 import registerServiceWorker from './registerServiceWorker';
 import {BrowserRouter as Router, Route} from 'react-router-dom'

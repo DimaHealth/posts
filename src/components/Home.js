@@ -10,6 +10,7 @@ class Home extends Component {
         this.state = {
             posts: [],
             api: "https://jsonplaceholder.typicode.com/posts",
+            apiUsers: "https://jsonplaceholder.typicode.com/users",
             page: 1,
             perPage: 10,
             maxPage: 1,
@@ -20,6 +21,7 @@ class Home extends Component {
         this.getPosts = this.getPosts.bind(this);
         this.updatePosts = this.updatePosts.bind(this);
         this.checkPagination = this.checkPagination.bind(this);
+        this.initPagination = this.initPagination.bind(this);
     }
 
     componentWillMount() {
@@ -38,19 +40,36 @@ class Home extends Component {
 
     getPosts() {
         fetch(this.state.api)
-            .then(response => response.json())
+            .then(response =>
+                response.json().then(json => ({
+                        status: response.status,
+                        json
+                    })
+                ))
             .then(json => {
-
-                this.setState({posts: json});
-                this.setState({maxPage: Math.ceil(this.state.posts.length / this.state.perPage)});
-
-                if (this.state.maxPage > this.state.page && this.state.page > 0) {
-                    this.setState({showNext: true})
-                } else {
-                    this.setState({page: this.state.maxPage})
-                    this.props.history.push(`/${this.state.page}`)
-                }
+                this.setState({posts: json.json});
+                localStorage.setItem("posts", JSON.stringify(json.json))
+                this.initPagination()
             })
+            .catch(e => {
+                console.log(e);
+                this.setState({posts : JSON.parse(localStorage.getItem("posts"))})
+                this.initPagination()
+            })
+    }
+
+
+
+
+    initPagination() {
+        this.setState({maxPage: Math.ceil(this.state.posts.length / this.state.perPage)});
+
+        if (this.state.maxPage > this.state.page && this.state.page > 0) {
+            this.setState({showNext: true})
+        } else {
+            this.setState({page: this.state.maxPage})
+            this.props.history.push(`/${this.state.page}`)
+        }
     }
 
     updatePosts() {
