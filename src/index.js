@@ -19,6 +19,7 @@ ReactDOM.render(
 
             {/*</div>*/}
             <Route exact path="/" component={Home}/>
+            <Route exact path="/:page" component={Home}/>
             <Route path="/post/:number" component={Post}/>
             <Route path="/user" component={User}/>
         </div>
