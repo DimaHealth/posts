@@ -12,16 +12,10 @@ import {BrowserRouter as Router, Route} from 'react-router-dom'
 ReactDOM.render(
     <Router>
         <div>
-            {/*<div>*/}
-                {/*<Link to="/">Home </Link>*/}
-                {/*<Link to="/post/:number"> POST</Link>*/}
-                {/*<Link to="/user"> user</Link>*/}
-
-            {/*</div>*/}
             <Route exact path="/" component={Home}/>
             <Route exact path="/:page" component={Home}/>
-            <Route path="/post/:number" component={Post}/>
-            <Route path="/user" component={User}/>
+            <Route  path="/post/:number" component={Post}/>
+            <Route  path="/user/:number" component={User}/>
         </div>
     </Router>, document.getElementById('root'));
 registerServiceWorker();
