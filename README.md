@@ -14,6 +14,8 @@ my-app/
         Home.sass
         Post.sass
         User.sass
+        button.sass
+        base.sass
     components/
         User.js
         Post.js

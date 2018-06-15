@@ -16,14 +16,12 @@ class Post extends Component {
 
         this.getUsers = this.getUsers.bind(this);
         this.getPost = this.getPost.bind(this);
-        this.getUserInfo = this.getUserInfo.bind(this);
 
     }
 
     componentWillMount() {
         this.getPost()
         this.getUsers()
-        this.getUserInfo()
     }
 
     getPost() {
@@ -43,6 +41,7 @@ class Post extends Component {
             .catch(e => {
                 console.log(e);
                 this.setState({post: JSON.parse(localStorage.getItem("posts"))[this.state.currentId - 1]})
+                this.getUserInfo()
                 console.log(this.state.post);
             })
     }
@@ -77,7 +76,6 @@ class Post extends Component {
             .catch(e => {
                 console.log(e);
                 this.setState({user: JSON.parse(localStorage.getItem("users"))[this.state.post.userId - 1] })
-                console.log(this.state.user);
             })
     }
 
@@ -90,7 +88,7 @@ class Post extends Component {
                 <div className="post__desc">
                     {this.state.post.body}
                 </div>
-                <div className="post__user">
+                <div className="post__user button-det">
                     <Link to={`/user/${this.state.post.userId}`}>{this.state.user.name}</Link>
                 </div>
             </div>

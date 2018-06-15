@@ -87,15 +87,18 @@ class Home extends Component {
                 <div className="posts__item-title">
                     {post.title}
                 </div>
-                <div className="post__item-link">
+                <div className="posts__item-link button-det">
                     <Link to={"/post/" + post.id}>Detail</Link>
                 </div>
             </div>
         ))
         return (
             <div className="App">
-                Home
+
                 <div className="posts">
+                    <div className="posts__title">
+                        Posts
+                    </div>
                     {posts}
                     {this.state.showNext &&
                     <div className="posts__more">
