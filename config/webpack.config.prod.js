@@ -135,6 +135,7 @@ module.exports = {
         oneOf: [
           // "url" loader works just like "file" loader but it also embeds
           // assets smaller than specified size as data URLs to avoid requests.
+
           {
             test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
             loader: require.resolve('url-loader'),
@@ -153,6 +154,7 @@ module.exports = {
               compact: true,
             },
           },
+
           // The notation here is somewhat confusing.
           // "postcss" loader applies autoprefixer to our CSS.
           // "css" loader resolves paths in CSS and adds assets as dependencies.
@@ -165,6 +167,24 @@ module.exports = {
           // tags. If you use code splitting, however, any async bundles will still
           // use the "style" loader inside the async code so CSS from them won't be
           // in the main CSS file.
+
+
+            // {
+            //     test: /\.sass$/,
+            //     include: paths.appSrc,
+            //     use: [
+            //         require.resolve('style-loader'),
+            //         {
+            //             loader: require.resolve('css-loader'),
+            //             options: {
+            //                 importLoaders: 1,
+            //             },
+            //         },
+            //         {
+            //             loader: require.resolve('sass-loader')
+            //         }
+            //     ]
+            // },
           {
             test: /\.css$/,
             loader: ExtractTextPlugin.extract(
@@ -212,6 +232,24 @@ module.exports = {
             ),
             // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
           },
+            {
+                test: /\.sass$/,
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: [
+                        {
+                            loader: 'css-loader',
+                            options: {
+                                modules: true,
+                                sourceMap: true,
+                                importLoaders: 2,
+                                localIdentName: '[name]__[local]___[hash:base64:5]'
+                            }
+                        },
+                        'sass-loader'
+                    ]
+                })
+            },
           // "file" loader makes sure assets end up in the `build` folder.
           // When you `import` an asset, you get its filename.
           // This loader doesn't use a "test" so it will catch all modules
@@ -284,9 +322,9 @@ module.exports = {
       sourceMap: shouldUseSourceMap,
     }),
     // Note: this won't work without ExtractTextPlugin.extract(..) in `loaders`.
-    new ExtractTextPlugin({
-      filename: cssFilename,
-    }),
+      new ExtractTextPlugin(cssFilename, {
+          allChunks: true
+      }),
     // Generate a manifest file which contains a mapping of all asset filenames
     // to their corresponding output file so that tools can pick it up without
     // having to parse `index.html`.
